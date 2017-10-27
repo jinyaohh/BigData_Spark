@@ -1040,126 +1040,183 @@ MathJax.Hub.Config({
   showProcessingMessages: false
 });
 </script>
-<title>Spark_overview</title></head><body><article class="markdown-body"><h1 id="what-is-apache-spark"><a name="user-content-what-is-apache-spark" href="#what-is-apache-spark" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>What is Apache Spark</h1>
-<h2 id="history"><a name="user-content-history" href="#history" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>History</h2>
-<p>Apache Spark was first developed in 2009 by AMPLab at UC Berkeley. It was first released at May 30th 2014(only 3 years ago) and later donated to the Apache Software Foundation which has maintained it ever since. </p>
-<h2 id="functionalities"><a name="user-content-functionalities" href="#functionalities" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Functionalities</h2>
-<p>It is an open-source, fault-tolerent batch-computing framework similar to Hadoop(We will talk about the difference in next section). It provides us several APIs to manipulate a special kind of datasets(so-called RDD) distributed on many machines in high level and hide away the low-level details to keep operations efficient and fault-tolerent under the hood.</p>
-<p><img alt="Spark Framework" src="/Users/LAI/Dropbox/Model_Visualization/SparkFramework.png" /></p>
-<p>There 1 main component in Spark served as foundation:</p>
+<title>1_installation_guide</title></head><body><article class="markdown-body"><h1 id="software-downloading-and-configuring-for-mac-osx"><a name="user-content-software-downloading-and-configuring-for-mac-osx" href="#software-downloading-and-configuring-for-mac-osx" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Software Downloading and configuring for Mac OSX</h1>
+<p>We have 2 ways to config Spark environment before starting using it. The hard way is to install Java, Scala and Spark one by one. And the easy way is to install docker and pull an existing image from the internet.</p>
+<h1 id="easy-way"><a name="user-content-easy-way" href="#easy-way" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Easy way:</h1>
+<h2 id="installing-docker"><a name="user-content-installing-docker" href="#installing-docker" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Installing Docker</h2>
+<ol>
+<li>
+<p>Download the Docker Community Edition for Mac from -&gt; <a href="https://store.docker.com/editions/community/docker-ce-desktop-mac">https://store.docker.com/editions/community/docker-ce-desktop-mac</a></p>
+</li>
+<li>
+<p>Double click it and follow the guide.</p>
+</li>
+<li>
+<p>Open a command-line terminal, and try:<br />
+<pre><code>$ docker version
+$ docker run hello-world
+</code></pre><br />
+The first one check the version of docker. And the 2nd one verifies that Docker is pulling images and running as expected.</p>
+</li>
+</ol>
+<h2 id="pulling-spark-image"><a name="user-content-pulling-spark-image" href="#pulling-spark-image" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Pulling Spark image</h2>
+<ol>
+<li>
+<p>Run:<br />
+<pre><code>$ docker run -it --rm -p 8888:8888 jupyter/pyspark-notebook
+</code></pre></p>
+</li>
+<li>
+<p>Take note of the authentication token and open it in a browser.</p>
+</li>
+</ol>
+<p>The image lives here -&gt; <a href="https://github.com/jupyter/docker-stacks/tree/master/pyspark-notebook">https://github.com/jupyter/docker-stacks/tree/master/pyspark-notebook</a></p>
+<p>It includes:<br />
+- Jupyter Notebook 5.2.x<br />
+- Conda Python 3.x environment<br />
+- pyspark, pandas, matplotlib, scipy, seaborn, scikit-learn<br />
+- Spark 2.2.0 with Hadoop 2.7<br />
+- Mesos client 1.2<br />
+- and so on</p>
+<h1 id="hard-way"><a name="user-content-hard-way" href="#hard-way" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Hard way:</h1>
+<h2 id="installing-java"><a name="user-content-installing-java" href="#installing-java" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Installing Java</h2>
+<ol>
+<li>
+<p>Download Java SE(standard edition)-JDK(Java developement kit) 9.0.1 from -&gt; <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk9-downloads-3848520.html">http://www.oracle.com/technetwork/java/javase/downloads/jdk9-downloads-3848520.html</a></p>
+</li>
+<li>
+<p>Double click it and follow the guide.</p>
+</li>
+</ol>
+<h2 id="installing-scala"><a name="user-content-installing-scala" href="#installing-scala" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Installing Scala</h2>
+<ol>
+<li>
+<p>Download the Scala binaries for osx from -&gt; <a href="http://www.scala-lang.org/download/">http://www.scala-lang.org/download/</a></p>
+</li>
+<li>
+<p>Extract the Scala tar file:<br />
+<code>$ tar xvf scala-2.12.3.tgz</code></p>
+</li>
+<li>
+<p>Move the extracted Scalar software files to /usr/local/scala (admin privilege needed):<br />
+<pre><code>    $ su -
+    Password:
+    # mkdir /usr/local/scala
+    # cd /Users/YourUserName/Downloads
+    # mv scala-2.12.3 /usr/local/scala
+    # exit
+</code></pre></p>
+</li>
+<li>
+<p>Set path for Scala so the shell knows where to find the software when executing scala script:<br />
+<pre><code>    $ vim ~/.bash_profile
+    append the following export command: 
+    export PATH=$PATH:/usr/local/scala-2.12.3/bin
+    save and quit
+</code></pre></p>
+</li>
+<li>
+<p>Verify your Scala is successfully installed:<br />
+<pre><code>    $ source ~/.bash_profile
+    $ scala -version
+</code></pre><br />
+If success, you should enter the scala REPL shell.</p>
+</li>
+</ol>
+<h2 id="installing-spark"><a name="user-content-installing-spark" href="#installing-spark" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Installing Spark</h2>
+<ol>
+<li>
+<p>Download the Spark binaries for osx from -&gt; <a href="https://spark.apache.org/downloads.html">https://spark.apache.org/downloads.html</a></p>
+</li>
+<li>
+<p>Extract the Spark tar file:<br />
+<code>$ tar xvf spark-2.2.0-bin-hadoop2.7.tgz</code></p>
+</li>
+<li>
+<p>Move the extracted Spark software files to /usr/local/spark (admin privilege needed):<br />
+<pre><code>    $ su -
+    Password:
+    # mkdir /usr/local/spark
+    # cd /Users/YourUserName/Downloads
+    # mv spark-2.2.0-bin-hadoop2.7 /usr/local/spark
+    # exit
+</code></pre></p>
+</li>
+<li>
+<p>Set path for Spark so the shell knows where to find the software when executing Spark script:<br />
+<pre><code>    $ vim ~/.bash_profile
+    append the following export command: 
+        export PATH = $PATH:/usr/local/spark/spark-2.2.0-bin-hadoop2.7/bin
+    save and quit
+</code></pre></p>
+</li>
+<li>
+<p>Verify your Spark is successfully installed:<br />
+<pre><code>    $ source ~/.bash_profile
+    $ spark-shell
+</code></pre><br />
+If success, you should see a bunch of stuff and enter the spark shell in scala.</p>
+</li>
+</ol>
+<h3 id="install-pyspark-package"><a name="user-content-install-pyspark-package" href="#install-pyspark-package" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Install pyspark package</h3>
+<pre><code>$ pip install pyspark
+</code></pre>
+
+<h1 id="using-spark"><a name="user-content-using-spark" href="#using-spark" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Using Spark</h1>
+<ol>
+<li>
+<p>go to where your spark installation folder is, for example: <br />
+/usr/local/spark/spark-2.2.0-bin-hadoop2.7/</p>
+</li>
+<li>
+<p>Use Spark either by coding in shell or directly launching our applications with spark-submit. Either way, we are able to tell the spark which master machine we want to connect to and what the configuration of Spark we would like to use.</p>
+</li>
+</ol>
+<h3 id="coding-in-shell"><a name="user-content-coding-in-shell" href="#coding-in-shell" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Coding in shell</h3>
+<p>You can set which master the context connects to using the &ndash;master argument, and you can add Python .zip, .egg or .py files to the runtime path by passing a comma-separated list to &ndash;py-files.</p>
+<p>For example to run bin/pyspark locally on exactly four cores, run: <br />
+<pre><code>$ ./bin/pyspark --master local[4] --py-files yourScript.py
+</code></pre></p>
+<p>And if we would also like to import yourScript later in the shell, run: <br />
+<pre><code>$ ./bin/pyspark --master local[4] --py-files yourScript.py
+</code></pre></p>
+<h4 id="using-ipython-instead-of-python-for-spark-shell"><a name="user-content-using-ipython-instead-of-python-for-spark-shell" href="#using-ipython-instead-of-python-for-spark-shell" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Using IPython instead of Python for spark-shell</h4>
+<pre><code>$ PYSPARK_DRIVER_PYTHON=ipython
+</code></pre>
+
+<h4 id="using-jupyter-instead-of-python-for-spark-shell"><a name="user-content-using-jupyter-instead-of-python-for-spark-shell" href="#using-jupyter-instead-of-python-for-spark-shell" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Using Jupyter instead of Python for spark-shell</h4>
+<pre><code>$ PYSPARK_DRIVER_PYTHON=jupyter
+</code></pre>
+
+<h2 id="running-python-script"><a name="user-content-running-python-script" href="#running-python-script" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Running Python script</h2>
+<pre><code>$ ./bin/spark-submit \
+  --class &lt;main-class&gt; \
+  --master &lt;master-url&gt; \
+  --deploy-mode &lt;deploy-mode&gt; \
+  --conf &lt;key&gt;=&lt;value&gt; \
+  ... # other options
+  &lt;application-zip&gt; \
+  [application-arguments]
+</code></pre>
+
 <ul>
-<li><strong>Spark Core</strong><br />
-  Spark Core provides foundational functionalities like distributed task dispatching, scheduling, basic I/O etc. All these functionalities are exposed through an application programming interface(for Java, Python, Scala, and R) called driver program. We tell the driver program what we want to do by passing a function. And it calls the Spark Core to do the low-level jobs for us.</li>
-</ul>
-<p>Built on top of the Spark Core, Spark provide 4 higher-level libraries for special purpose jobs:</p>
-<ul>
 <li>
-<p><strong>Spark SQL</strong><br />
-  Spark SQL provides a data abstraction called DataFrames that support both structured or semi-structured data. </p>
+<p>&ndash;class: The entry point for your application (e.g. org.apache.spark.examples.SparkPi)</p>
 </li>
 <li>
-<p><strong>Spark Streaming</strong><br />
-  Spark Streaming is used for steaming analysis because of the speed of computation.</p>
+<p>&ndash;master: The master URL for the cluster (e.g. spark://23.195.26.187:7077 or local) </p>
 </li>
 <li>
-<p><strong>MLlib</strong><br />
-  MLlib is used for machine learning jobs. Specifically, it includes following machine learning techniques and models:</p>
-<ul>
-<li>Statistics like correlations, stratified sampling, hypothesis testing, random data generation.</li>
-<li>Classificationa and Regression like SVM, logistic regression, linear regression, decisoon tree, naive Bayes.</li>
-<li>Collaborativbe Filtering like alternating least squares</li>
-<li>Cluster Analysis like kmeans and Latent Dirichlet Allocation</li>
-<li>Dimension Reduction like SVD and PCA</li>
-<li>Feature Extraction and Transformation</li>
-<li>Optimization like SGD, L-BFGS.</li>
-</ul>
+<p>&ndash;deploy-mode: Whether to deploy your driver on the worker nodes (cluster) or locally as an external client (client) (default: client)</p>
 </li>
 <li>
-<p><strong>GraphX</strong><br />
-  GraphX is used for graph processing like PageRank and so on.</p>
+<p>&ndash;conf: Arbitrary Spark configuration property in key=value format. </p>
+</li>
+<li>
+<p>application-zip: Path to a bundled zip file including your application and all dependencies. The URL must be globally visible inside of your cluster, for instance, an hdfs:// path or a file:// path that is present on all nodes.</p>
+</li>
+<li>
+<p>application-arguments: Arguments passed to the main method of your main class, if any.</p>
 </li>
 </ul>
-<h1 id="what-is-special-about-spark"><a name="user-content-what-is-special-about-spark" href="#what-is-special-about-spark" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>What is special about Spark</h1>
-<p>All we do with data can be generalized as applying some operations on some dataset. Spark is designed in this way too.</p>
-<h2 id="rdd"><a name="user-content-rdd" href="#rdd" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>RDD</h2>
-<p>The special kind of datasets in Spark&ndash;<strong>Resilient Distributed Datasets(RDDs)</strong>&ndash;form the foundation of Spark. Basically, an RDD is a collections of tuples. What is special about RDD is that your can keep it in memories of machines by using <code>persist()</code> or <code>cache()</code> method. On addition to that, you can specify the storage level to control how it is saved. </p>
-<p>By default, Spark saves the RDD as deserialized Java objects in memory. And if the RDD is too big, the part that doesn&rsquo;t fit will not be cached and will be recompute on the fly every time they are needed. (For the full set of storage levels and their details, check -&gt; <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-persistence">https://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-persistence</a>)</p>
-<p>This is the key difference between Spark and Hadoop. Because as we know, Hadoop don&rsquo;t save any output in memory, even the intermediate key/value pairs coming out of map function are saved to local disk and being retrieved by reducer. The disk I/Os and serialization/deserialization during I/O make the process very inefficient if we need to use the same dataset from time to time. (Think about tuning models in Machine Learning.) <strong>In contrast, the RDDs used in Spark can stay in memory thus allows up to use them iteratively and interactively over and over again without having to read them from disk. </strong></p>
-<h2 id="operations"><a name="user-content-operations" href="#operations" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Operations:</h2>
-<p>The operations to manipulate RDD in Spark are highlevel and flexible. They are high-level because it saves us from disk I/Os and provide a varity of high-level operations like JCascalog and other libraries for Hadoop. They are flexible because lots of the operations work with customed functions implemented for specific purpose by ourselves. In general, the operations are categorized into transformations and actions:</p>
-<ul>
-<li>
-<p><strong>Transformations: all the operations take in RDD and return a new RDD are considered transformations.</strong> Below are some of them:</p>
-<table>
-<thead>
-<tr>
-<th>Transformation</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>map(function)</td>
-<td>use the input function to process each row of RDD and return a new processed RDD</td>
-</tr>
-<tr>
-<td>filter(function)</td>
-<td>use the input function to evaluate each row of RDD and remove the rows evaluated false</td>
-</tr>
-<tr>
-<td>union(otherDataset)</td>
-<td>return the union of 2 data sets based on identical fields</td>
-</tr>
-<tr>
-<td>reduceByKey(function, [numTasks])</td>
-<td>return a new RDD in which values of same key are aggregated</td>
-</tr>
-<tr>
-<td>&hellip;</td>
-<td>&hellip;</td>
-</tr>
-</tbody>
-</table>
-</li>
-<li>
-<p><strong>Actions: all the operations take in RDD and return something that is not RDD are considered actions.</strong> For example:</p>
-<table>
-<thead>
-<tr>
-<th>Actions</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>reduce(function)</td>
-<td>aggregate the elements of RDD using provided function</td>
-</tr>
-<tr>
-<td>collect()</td>
-<td>return all the elements in RDD as an array</td>
-</tr>
-<tr>
-<td>rake(n)</td>
-<td>return the elements of first n rows in RDD as an array</td>
-</tr>
-<tr>
-<td>saveAsSequenceFile(path)</td>
-<td>wite the elements of the dataset as a Hadoop SequenceFile in a given path in local filesystem</td>
-</tr>
-<tr>
-<td>&hellip;</td>
-<td>&hellip;</td>
-</tr>
-</tbody>
-</table>
-</li>
-</ul>
-<p>For more operations and details, check -&gt; <a href="https://spark.apache.org/docs/latest/rdd-programming-guide.html#transformations">https://spark.apache.org/docs/latest/rdd-programming-guide.html#transformations</a></p>
-<p>On addition to these basic, one-step type of operations, Spark offers more complex operations in those 4 specific purpose libraries we talked about in last section. And these complex operations are nothing more than a combination of basic operations.</p>
-<h1 id="when-should-we-use-it"><a name="user-content-when-should-we-use-it" href="#when-should-we-use-it" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>When should we use it</h1>
-<p>As we said, the main advantage of Spark is the RDD. It&rsquo;s fast for iterative algorithm and interactive developing environment. And it&rsquo;s convinient to use those 4 specific purpose libraries if they suit our needs.</p>
-<h1 id="references"><a name="user-content-references" href="#references" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>References</h1>
-<p>Apache Spark Documentation: (<a href="https://spark.apache.org/docs/latest/index.html">https://spark.apache.org/docs/latest/index.html</a>)<br />
-Wikipedia: Apache Spark: (<a href="https://en.wikipedia.org/wiki/Apache_Spark">https://en.wikipedia.org/wiki/Apache_Spark</a>)<br />
-Apache Spark GitHub Repository: (<a href="https://github.com/apache/spark">https://github.com/apache/spark</a>)</p></article></body></html>
+<p>Details refer to -&gt; <a href="https://spark.apache.org/docs/latest/submitting-applications.html">https://spark.apache.org/docs/latest/submitting-applications.html</a></p></article></body></html>

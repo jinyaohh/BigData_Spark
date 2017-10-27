@@ -6,7 +6,7 @@ Apache Spark was first developed in 2009 by AMPLab at UC Berkeley. It was first 
 ## Functionalities
 It is an open-source, fault-tolerent batch-computing framework similar to Hadoop(We will talk about the difference in next section). It provides us several APIs to manipulate a special kind of datasets(so-called RDD) distributed on many machines in high level and hide away the low-level details to keep operations efficient and fault-tolerent under the hood.
 
-![Spark Framework](SparkFramework.png)
+![Spark Framework](images/SparkFramework.png)
 
 There 1 main component in Spark served as foundation:
 
