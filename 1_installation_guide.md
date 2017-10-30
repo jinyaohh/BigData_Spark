@@ -18,7 +18,7 @@ The first one check the version of docker. And the 2nd one verifies that Docker 
 ## Pulling Spark image
 1. Run:
 ```
-$ docker run -it --rm -p 8888:8888 jupyter/pyspark-notebook
+$ docker run -it -p 8888:8888 jupyter/pyspark-notebook
 ```
 
 2. Take note of the authentication token and open it in a browser.
